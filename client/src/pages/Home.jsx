@@ -2,18 +2,15 @@ import React,  { useState, useEffect } from 'react';
  
 import { Loader, Card, FormField } from "../components";
 
-const RenderCards = ({data, title}) => {
-
-  if(data?.lenght > 0) {
-    return data.map((post) => <Card key={post._id} {...post} />)
+const RenderCards = ({ data, title }) => {
+  if (data?.length > 0) { // Corrected length spelling
+    return data.map((post) => <Card key={post._id} {...post} />);
   }
 
   return (
     <h2 className="mt-5 font-bold text-[#6449ff] text-xl uppercase">{title}</h2>
-  
-  )
-
-}
+  );
+};
 
 const Home = () => {
 
