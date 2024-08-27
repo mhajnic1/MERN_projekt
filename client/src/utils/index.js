@@ -13,6 +13,6 @@ export function getRandomPrompt(prompt) {
     return randomPrompt;
 }
 
-export async function downloadImage (_id, photo) {
-    FileSaver.saveAs(photo, 'downlaod-${_id}.jpg');
+export async function downloadImage(_id, photo) {
+    FileSaver.saveAs(photo, `download-${_id}.jpg`); // Use backticks for template literals
 }
