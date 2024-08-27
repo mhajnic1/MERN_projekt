@@ -23,7 +23,7 @@ const FormField = ( { LabelName, type, name, placeholder, value, handleChange, i
 
       <input 
         type={type}
-        id={name}
+        name={name}
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
@@ -35,4 +35,4 @@ const FormField = ( { LabelName, type, name, placeholder, value, handleChange, i
   )
 }
 
-export default FormField
+export default FormField;
