@@ -1,5 +1,6 @@
 import express from 'express';
 import validator from 'validator';
+import bcrypt from 'bcrypt';
 
 import User from '../mongodb/models/userModel.js';
 
@@ -38,7 +39,10 @@ router.post('/register', async (req, res) => {
       throw Error('Email already in use');
     }
 
-    const user = new User({ name, email, password });
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const user = new User({ name, email, password: hashedPassword });
     await user.save();
 
     res.json({ success: true, message: 'User registered successfully', name: user.name });
@@ -64,7 +68,9 @@ router.post('/login', async (req, res) => {
 
     }
 
-    if (user.password !== password) {
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
       return res.status(401).json({ success: false, message: 'Incorrect password' });
     }
 

@@ -1,8 +1,11 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false);
   const modalRef = useRef(null);
 
@@ -40,6 +43,8 @@ const Signup = () => {
       if (data.success) {
         const userName = data.name;
         console.log('Signed in as:', userName);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        navigate('/');
       } else {
         console.log('Signin failed:', data.message);
       }
@@ -82,13 +87,13 @@ const Signup = () => {
                   className='text-sm mb-2 block font-bold text-gray-700'
                   htmlFor='name'
                 >
-                  Name
+                  Username
                 </label>
                 <input
                   className='focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 focus:outline-none'
                   id='name'
                   type='name'
-                  placeholder='Enter your name'
+                  placeholder='Enter your username'
                   onChange={(e) => setName(e.target.value)}
                   value={name}
                 />

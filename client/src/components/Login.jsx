@@ -1,8 +1,11 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const navigate = useNavigate();
+  
   const [isOpen, setIsOpen] = useState(false);
   const modalRef = useRef(null);
 
@@ -39,6 +42,8 @@ const Login = () => {
         if (data.success) {
           const userName = data.name;
           console.log('Logged in as:', userName);
+          localStorage.setItem('user', JSON.stringify(data.user));
+          navigate('/');
         } else {
           console.log('Login failed:', data.message);
         }
