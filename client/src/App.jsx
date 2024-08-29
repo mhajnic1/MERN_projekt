@@ -4,6 +4,7 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import { logo } from './assets'
 import { Home } from './pages'; 
 import { CreatePost } from './pages'; 
+import { Login, Signup } from './components';
  
 const App = () => {
   return (
@@ -19,6 +20,14 @@ const App = () => {
         <Link to="/create-post"
         className="font-inter font-medium bg-[#6469ff] text-white
         px-4 py-2 rounded-md"> Create </Link>
+
+        <Link to="/users/login"
+        className="font-inter font-medium bg-[#6469ff] text-white
+        px-4 py-2 rounded-md"> Login </Link>
+
+        <Link to="/users/register"
+        className="font-inter font-medium bg-[#6469ff] text-white
+        px-4 py-2 rounded-md"> Signup </Link>
       </header>
 
       <main className="sm:p-8 px-4 py-8
@@ -26,6 +35,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/create-post" element={<CreatePost/>} />
+          <Route path="/users/login" element={<Login/>} />
+          <Route path="/users/register" element={<Signup/>} />
         </Routes>
       </main>
     </BrowserRouter>
