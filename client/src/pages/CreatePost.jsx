@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { preview } from '../assets';
@@ -8,9 +8,10 @@ import { FormField, Loader } from '../components';
 const CreatePost = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    name: '',
+    username: '',
     prompt: '',
     photo: '',
+    userID: '66d48eb267ac90bcb9fb901b'
   });
 
   const [generatingImg, setGeneratingImg] = useState(false);
@@ -20,7 +21,7 @@ const CreatePost = () => {
     if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch('http://localhost:8080/api/v1/dalle', {
+        const response = await fetch('http://localhost:8080/dalle', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -30,7 +31,7 @@ const CreatePost = () => {
 
         const data = await response.json();
 
-        setForm({ ...form, photo: data.photo }); // Set the photo to the URL returned from the backend
+        setForm({ ...form, photo: data.photo, userID: '66d48eb267ac90bcb9fb901b' }); // Set the photo to the URL returned from the backend
       } catch (error) {
         alert(error);
       } finally {
@@ -48,13 +49,13 @@ const CreatePost = () => {
       setLoading(true);
 
       try {
-        const response = await fetch('http://localhost:8080/api/v1/post', 
+        const response = await fetch('http://localhost:8080/posts/post',
           {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(form)
+            body: JSON.stringify( form )
           })
 
           await response.json();
@@ -94,9 +95,9 @@ const CreatePost = () => {
           <FormField 
             LabelName="Your name"
             type="text"
-            name="name"
+            name="username"
             placeholder="John Doe"
-            value={form.name}
+            value={form.username}
             handleChange={handleChange}
           />
 

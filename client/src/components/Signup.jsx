@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
@@ -19,7 +19,7 @@ const Signup = () => {
     }
   };
 
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -29,21 +29,18 @@ const Signup = () => {
     console.log('Signing in...');
 
     try {
-      const response = await fetch('http://localhost:8080/api/users/register', {
+      const response = await fetch('http://localhost:8080/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ username, email, password }),
       });
 
       const data = await response.json();
       console.log(data);
 
       if (data.success) {
-        const userName = data.name;
-        console.log('Signed in as:', userName);
-        localStorage.setItem('user', JSON.stringify(data.user));
         navigate('/');
       } else {
         console.log('Signin failed:', data.message);
@@ -85,17 +82,17 @@ const Signup = () => {
               <div className='mb-4'>
                 <label
                   className='text-sm mb-2 block font-bold text-gray-700'
-                  htmlFor='name'
+                  htmlFor='username'
                 >
                   Username
                 </label>
                 <input
                   className='focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 focus:outline-none'
-                  id='name'
-                  type='name'
+                  id='username'
+                  type='username'
                   placeholder='Enter your username'
-                  onChange={(e) => setName(e.target.value)}
-                  value={name}
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
                 />
               </div>
               <div className='mb-4'>

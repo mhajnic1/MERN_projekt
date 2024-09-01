@@ -1,6 +1,7 @@
+/* eslint-disable react/no-unescaped-entities */
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -28,7 +29,7 @@ const Login = () => {
     console.log('Logging in...');
 
     try {
-        const response = await fetch('http://localhost:8080/api/users/login', {
+        const response = await fetch('http://localhost:8080/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -40,9 +41,6 @@ const Login = () => {
         console.log(data);
   
         if (data.success) {
-          const userName = data.name;
-          console.log('Logged in as:', userName);
-          localStorage.setItem('user', JSON.stringify(data.user));
           navigate('/');
         } else {
           console.log('Login failed:', data.message);

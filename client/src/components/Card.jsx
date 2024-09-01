@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { download } from '../assets';
 import { downloadImage } from '../utils';
 import FlexBetween from './FlexBetween'; // Import FlexBetween
 
-const Card = ({ _id, name, prompt, photo, initialLikes = 0, initialComments = 0 }) => {
+const Card = ({ _id, username, prompt, photo, initialLikes = 0, initialComments = 0 }) => {
 
   // Local state for likes and comments
   const [likes, setLikes] = useState(initialLikes);

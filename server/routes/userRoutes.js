@@ -2,7 +2,7 @@ import express from 'express';
 import validator from 'validator';
 import bcrypt from 'bcrypt';
 
-import User from '../mongodb/models/userModel.js';
+import User from '../models/User.js';
 
 const router = express.Router();
 

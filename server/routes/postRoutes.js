@@ -2,7 +2,7 @@ import express from 'express';
 import * as dotenv from 'dotenv';
 import { v2 as cloudinary } from 'cloudinary';
 
-import Post from '../mongodb/models/postModel.js';
+import Post from '../models/Post.js';
 
 dotenv.config();
 
@@ -31,18 +31,18 @@ router.route('/').get(async(req, res) => {
 // create a post
 router.route('/').post(async (req, res) => {
     try {
-        const { name, prompt, photo } = req.body;
+        const { username, prompt, photo } = req.body;
         const photoUrl = await cloudinary.uploader.upload(photo);
 
         const newPost = await Post.create({
-            name,
+            username,
             prompt,
             photo: photoUrl.url,
         });
 
         res.status(201).json({ success: true, data: newPost });
     } catch (error) {
-        console.error('Error creating post:', error); // Log detailed error
+        console.error('Error creating post:', error);
         res.status(500).json({ success: false, message: error.message });
     }
 });
