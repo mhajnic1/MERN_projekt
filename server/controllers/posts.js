@@ -17,7 +17,7 @@ export const createPost = async (req, res) => {
     const { userId, username, prompt, photo } = req.body;
     const photoUrl = await cloudinary.uploader.upload(photo);
 
-    //const user = await User.findById(userId);
+    const user = await User.findById(userId);
 
     const newPost = new Post({
       userId,

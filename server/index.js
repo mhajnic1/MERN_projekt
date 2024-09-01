@@ -3,17 +3,18 @@ import * as dotenv from 'dotenv';
 import cors from 'cors';
 
 import connectDB from './mongodb/connect.js';
-import postRoutesOld from './routes/postRoutes.js';
-import userRoutesOld from  './routes/userRoutes.js';
-import { users, posts } from "./data/index.js";
-import User from "./models/User.js";
-import Post from "./models/Post.js";
-
-
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
 import dalleRoutes from './routes/dalle.js';
+
+import postRoutesOld from './routes/postRoutes.js';
+import userRoutesOld from  './routes/userRoutes.js';
+
+import { users, posts } from "./data/index.js";
+import User from "./models/User.js";
+import Post from "./models/Post.js";
+
 
 dotenv.config();
 
