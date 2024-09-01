@@ -79,6 +79,7 @@ const CreatePost = () => {
     setForm({ ...form, prompt: randomPrompt });
   };
 
+
   return (
     <section className="max-w-7xl mx-auto">
       <div>
@@ -88,7 +89,7 @@ const CreatePost = () => {
         </p>
       </div>
 
-      <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>
+      <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>      
         <div className="flex flex-col gap-5">
           <FormField 
             LabelName="Your name"
@@ -98,6 +99,7 @@ const CreatePost = () => {
             value={form.name}
             handleChange={handleChange}
           />
+
 
           <FormField 
             LabelName="Prompt"

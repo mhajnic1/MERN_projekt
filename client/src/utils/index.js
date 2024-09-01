@@ -16,3 +16,27 @@ export function getRandomPrompt(prompt) {
 export async function downloadImage(_id, photo) {
     FileSaver.saveAs(photo, `download-${_id}.jpg`); // Use backticks for template literals
 }
+
+// utils.js
+export const handleSearchChange = (e, setSearchText, allPosts, searchTimeout, setSearchTimeout, setSearchedResults) => {
+    const value = e.target.value;
+    setSearchText(value);
+    
+    // Clear previous timeout
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+  
+    // Set a new timeout
+    const timeout = setTimeout(() => {
+      const searchResults = allPosts.filter(
+        (item) =>
+          item.name.toLowerCase().includes(value.toLowerCase()) ||
+          item.prompt.toLowerCase().includes(value.toLowerCase())
+      );
+      setSearchedResults(searchResults);
+    }, 500);
+  
+    setSearchTimeout(timeout);
+  };
+  
