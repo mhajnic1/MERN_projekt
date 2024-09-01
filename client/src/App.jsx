@@ -16,7 +16,7 @@ const App = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/v1/post', {
+        const response = await fetch('http://localhost:8080/posts', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
         });
