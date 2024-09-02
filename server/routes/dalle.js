@@ -3,6 +3,8 @@ import * as dotenv from 'dotenv';
 import OpenAI from 'openai';
 import axios from 'axios';
 
+import { verifyToken } from "../middleware/auth.js";
+
 dotenv.config();
 
 const router = express.Router();
@@ -15,7 +17,7 @@ router.route('/').get((req, res) => {
     res.send('Diamond is unbreakable');
 });
 
-router.route('/').post(async (req, res) => {
+router.route('/').post(verifyToken, async (req, res) => {
     try {
         const { prompt } = req.body;
 

@@ -42,9 +42,9 @@ const Card = ({ _id, username, prompt, photo, initialLikes = 0, initialComments 
         <FlexBetween className="mt-5">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-full bg-green-700 flex justify-center items-center text-white text-xs font-bold">
-              {name[0]}
+              {username[0]}
             </div>
-            <p className="text-white text-sm">{name}</p>
+            <p className="text-white text-sm">{username}</p>
           </div>
           <button type="button" onClick={() => downloadImage(_id, photo)} className="outline-none bg-transparent border-none">
             <img src={download} alt="download" className="w-6 h-6 object-contain invert" />

@@ -7,7 +7,6 @@ import { Login, Signup } from './components';
 import { handleSearchChange } from './utils'; // Import the function
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [allPosts, setAllPosts] = useState([]);
   const [searchedResults, setSearchedResults] = useState([]);
@@ -34,8 +33,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Navbar 
-        isLoggedIn={isLoggedIn} 
+      <Navbar
         searchText={searchText}
         handleSearchChange={(e) =>
           handleSearchChange(

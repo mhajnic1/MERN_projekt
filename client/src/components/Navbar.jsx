@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { logo } from '../assets';
 import SearchBar from './SearchBar'; // Import SearchBar
 import Login from './Login';
 import Signup from './Signup';
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setLogout } from '../state';
 
-const Navbar = ({ isLoggedIn, searchText, handleSearchChange }) => {
+
+
+const Navbar = ({ searchText, handleSearchChange }) => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
+  const isAuth = Boolean(useSelector((state) => state.token));
+  const dispatch = useDispatch();
 
   const toggleLoginPopup = () => {
     setIsLoginOpen(!isLoginOpen);
@@ -15,6 +22,12 @@ const Navbar = ({ isLoggedIn, searchText, handleSearchChange }) => {
 
   const toggleSignupPopup = () => {
     setIsSignupOpen(!isSignupOpen);
+  };
+
+  const handleLogout = () => {
+    dispatch(
+      setLogout()
+    );
   };
 
   return (
@@ -35,10 +48,19 @@ const Navbar = ({ isLoggedIn, searchText, handleSearchChange }) => {
 
       {/* Right-side buttons */}
       <div className="flex space-x-4 flex-shrink-0">
-        {isLoggedIn ? (
-          <Link to="/create-post" className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md">
-            Create
-          </Link>
+        {isAuth ? (
+          <>
+            <Link to="/create-post" className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md">
+              Create
+            </Link>
+            <button 
+              onClick={handleLogout}
+              className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md"
+            >
+              Log out
+            </button>
+          </>
+          
         ) : (
           <>
             <button 

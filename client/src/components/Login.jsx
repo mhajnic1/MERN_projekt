@@ -2,13 +2,14 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { setLogin } from "../state";
 
 const Login = ({ toggleForm }) => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const modalRef = useRef(null);
+  const dispatch = useDispatch();
 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -18,7 +19,6 @@ const Login = ({ toggleForm }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('Logging in...');
 
     try {
       const response = await fetch('http://localhost:8080/auth/login', {
@@ -30,10 +30,15 @@ const Login = ({ toggleForm }) => {
       });
     
       const data = await response.json();
-      console.log(data);
 
-      if (data.success) {
-        navigate('/');
+      if (data) {
+        dispatch(
+          setLogin({
+            user: data.user,
+            token: data.token,
+          })
+        );
+        toggleForm();
       } else {
         console.log('Login failed:', data.message);
       }
@@ -42,7 +47,6 @@ const Login = ({ toggleForm }) => {
       console.error(error);
     }
 
-    toggleForm(); // Close the modal after login attempt
   };
 
   useEffect(() => {
@@ -100,16 +104,12 @@ const Login = ({ toggleForm }) => {
         </form>
         <div className='mt-4 text-center'>
           <span className='text-gray-700'>Don't have an account?</span>
-          <a className='ml-2 text-blue-500 hover:text-blue-600' href='/users/register'>
-            Sign Up
-          </a>
+          <button
+            className='ml-2 text-blue-500 hover:text-blue-600' onClick={() => toggleForm()}
+          >
+            Sign up
+          </button>
         </div>
-        <button
-          className='absolute top-2 right-2 text-gray-500'
-          onClick={toggleForm}
-        >
-          Close
-        </button>
       </div>
     </div>
   );

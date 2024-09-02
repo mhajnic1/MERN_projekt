@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { preview } from '../assets';
 import { getRandomPrompt } from '../utils';
 import { FormField, Loader } from '../components';
+import { useSelector } from "react-redux";
 
 const CreatePost = () => {
   const navigate = useNavigate();
@@ -11,8 +12,10 @@ const CreatePost = () => {
     username: '',
     prompt: '',
     photo: '',
-    userID: '66d48eb267ac90bcb9fb901b'
   });
+
+  const user = useSelector((state) => state.user);
+  const token = useSelector((state) => state.token);
 
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -24,6 +27,7 @@ const CreatePost = () => {
         const response = await fetch('http://localhost:8080/dalle', {
           method: 'POST',
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ prompt: form.prompt }),
@@ -31,7 +35,7 @@ const CreatePost = () => {
 
         const data = await response.json();
 
-        setForm({ ...form, photo: data.photo, userID: '66d48eb267ac90bcb9fb901b' }); // Set the photo to the URL returned from the backend
+        setForm({ ...form, photo: data.photo }); // Set the photo to the URL returned from the backend
       } catch (error) {
         alert(error);
       } finally {
@@ -47,15 +51,17 @@ const CreatePost = () => {
 
     if(form.prompt && form.photo){
       setLoading(true);
+      console.log(user._id, user.username, form.prompt, form.photo)
 
       try {
         const response = await fetch('http://localhost:8080/posts/post',
           {
             method: 'POST',
             headers: {
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify( form )
+            body: JSON.stringify({ userId: user._id, username: user.username, prompt: form.prompt, photo: form.photo })
           })
 
           await response.json();
@@ -71,7 +77,7 @@ const CreatePost = () => {
   };
 
   const handleChange = (e) => {
-    console.log(e.target.name, e.target.value);
+    //console.log(e.target.name, e.target.value);
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -95,7 +101,7 @@ const CreatePost = () => {
           <FormField 
             LabelName="Your name"
             type="text"
-            name="username"
+            username="username"
             placeholder="John Doe"
             value={form.username}
             handleChange={handleChange}
@@ -105,7 +111,7 @@ const CreatePost = () => {
           <FormField 
             LabelName="Prompt"
             type="text"
-            name="prompt"
+            username="prompt"
             placeholder="an astronaut lounging in a tropical resort in space, vaporwave"
             value={form.prompt}
             handleChange={handleChange}

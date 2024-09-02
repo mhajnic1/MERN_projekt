@@ -13,7 +13,7 @@ const RenderCards = ({ data, title }) => {
         <Card
           key={post._id}
           _id={post._id}
-          name={post.name}
+          username={post.username}
           prompt={post.prompt}
           photo={post.photo} // Fallback image if photo is not available
           initialLikes={0}

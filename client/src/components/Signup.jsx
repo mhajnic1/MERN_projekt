@@ -1,14 +1,16 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { setLogin } from "../state";
 
 const Signup = ({ toggleForm }) => {
-  const navigate = useNavigate();
+
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const modalRef = useRef(null);
+  const dispatch = useDispatch();
 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -18,7 +20,6 @@ const Signup = ({ toggleForm }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Signing up...');
 
     try {
       const response = await fetch('http://localhost:8080/auth/register', {
@@ -30,10 +31,15 @@ const Signup = ({ toggleForm }) => {
       });
 
       const data = await response.json();
-      console.log(data);
 
-      if (data.success) {
-        navigate('/');
+      if (data) {
+        dispatch(
+          setLogin({
+            user: data.user,
+            token: data.token,
+          })
+        );
+        toggleForm();
       } else {
         console.log('Signup failed:', data.message);
       }
@@ -42,7 +48,6 @@ const Signup = ({ toggleForm }) => {
       console.error(error);
     }
 
-    toggleForm(); // Close the modal after signup attempt
   };
 
   useEffect(() => {
@@ -115,8 +120,7 @@ const Signup = ({ toggleForm }) => {
         <div className='mt-4 text-center'>
           <span className='text-gray-700'>Have an account?</span>
           <button
-            className='ml-2 text-blue-500 hover:text-blue-600'
-            onClick={() => toggleForm()}
+            className='ml-2 text-blue-500 hover:text-blue-600' onClick={() => toggleForm()}
           >
             Log In
           </button>
