@@ -13,8 +13,8 @@ const Card = ({ _id, username, prompt, photo, initialLikes = 0, initialComments 
   const [isComments, setIsComments] = useState(false);
 
   const dispatch = useDispatch();
-  const token = useSelector((state) => state?.token);
-  const loggedInUserId = useSelector((state) => state?.user._id);
+  const token = useSelector((state) => state.token);
+  const loggedInUserId = useSelector((state) => state?.user?._id);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
 

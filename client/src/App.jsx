@@ -5,12 +5,17 @@ import Navbar from './components/Navbar';
 import { Home, CreatePost, UserProfile } from './pages'; 
 import { Login, Signup } from './components';
 import { handleSearchChange } from './utils'; // Import the function
+import { useSelector } from "react-redux";
 
 const App = () => {
   const [searchText, setSearchText] = useState('');
   const [allPosts, setAllPosts] = useState([]);
+  const [userPosts, setUserPosts] = useState([]);
   const [searchedResults, setSearchedResults] = useState([]);
   const [searchTimeout, setSearchTimeout] = useState(null);
+
+  const user = useSelector((state) => state.user);
+  const token = useSelector((state) => state.token);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -29,6 +34,27 @@ const App = () => {
     };
 
     fetchPosts();
+  }, []);
+
+  useEffect(() => {
+    const fetchUserPosts = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/posts/${user._id}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json' },
+        });
+        if (response.ok) {
+          const result = await response.json();
+          setUserPosts(result.data.reverse());
+        }
+      } catch (error) {
+        null
+      }
+    };
+
+    fetchUserPosts();
   }, []);
 
   return (
@@ -59,7 +85,10 @@ const App = () => {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/users/login" element={<Login />} />
           <Route path="/users/register" element={<Signup />} />
-          <Route path="/posts/:userId" element={<UserProfile />} />
+          <Route path="/posts/:userId" element={
+            <UserProfile
+              posts={userPosts}
+            />} />
         </Routes>
       </main>
     </BrowserRouter>
