@@ -18,7 +18,7 @@ export async function downloadImage(_id, photo) {
 }
 
 // utils.js
-export const handleSearchChange = (e, setSearchText, allPosts, searchTimeout, setSearchTimeout, setSearchedResults) => {
+export const handleSearchChange = (e, setSearchText, allPosts, userPosts, searchTimeout, setSearchTimeout, setSearchedResults, setUserSearchedResults) => {
     const value = e.target.value;
     setSearchText(value);
     
@@ -35,8 +35,16 @@ export const handleSearchChange = (e, setSearchText, allPosts, searchTimeout, se
           item.prompt.toLowerCase().includes(value.toLowerCase())
       );
       setSearchedResults(searchResults);
+
+      const userSearchResults = userPosts.filter(
+        (item) =>
+          item.username.toLowerCase().includes(value.toLowerCase()) ||
+          item.prompt.toLowerCase().includes(value.toLowerCase())
+      );
+      setUserSearchedResults(userSearchResults);
+
     }, 500);
-  
+
     setSearchTimeout(timeout);
   };
   

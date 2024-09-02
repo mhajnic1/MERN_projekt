@@ -17,6 +17,7 @@ const App = () => {
   const [allPosts, setAllPosts] = useState([]);
   const [userPosts, setUserPosts] = useState([]);
   const [searchedResults, setSearchedResults] = useState([]);
+  const [userSearchedResults, setUserSearchedResults] = useState([]);
   const [searchTimeout, setSearchTimeout] = useState(null);
 
   const user = useSelector((state) => state?.user);
@@ -75,9 +76,11 @@ const App = () => {
               e,
               setSearchText,
               allPosts,
+              userPosts,
               searchTimeout,
               setSearchTimeout,
-              setSearchedResults
+              setSearchedResults,
+              setUserSearchedResults
             )
           }
         />
@@ -94,10 +97,14 @@ const App = () => {
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/users/login" element={<Login />} />
             <Route path="/users/register" element={<Signup />} />
-            <Route path="/posts/:userId" element={
-              <UserProfile
-                posts={userPosts}
-              />} />
+            <Route
+              path="/posts/:userId"
+              element={
+                <UserProfile
+                  posts={searchText ? userSearchedResults : userPosts}
+                  searchText={searchText}
+                />}
+            />
           </Routes>
         </main>
         </ThemeProvider>

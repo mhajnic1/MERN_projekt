@@ -5,10 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { setFriends } from "../state";
 import FlexBetween from "./FlexBetween";
 
-const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
+const Friend = ({ friendId, name }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { _id } = useSelector((state) => state.user);
+  const id = useSelector((state) => state.user._id);
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
 
@@ -22,7 +22,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const patchFriend = async () => {
     const response = await fetch(
-      `http://localhost:3001/users/${_id}/${friendId}`,
+      `http://localhost:8080/users/${id}/${friendId}`,
       {
         method: "PATCH",
         headers: {
@@ -40,8 +40,8 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
       <FlexBetween gap="1rem">
         <Box
           onClick={() => {
-            navigate(`/profile/${friendId}`);
-            navigate(0);
+            navigate(`/posts/${friendId}`);
+            //navigate(0);
           }}
         >
           <Typography
@@ -56,9 +56,6 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
             }}
           >
             {name}
-          </Typography>
-          <Typography color={medium} fontSize="0.75rem">
-            {subtitle}
           </Typography>
         </Box>
       </FlexBetween>

@@ -12,9 +12,7 @@ const FriendListWidget = ({ userId }) => {
   const friends = useSelector((state) => state.user.friends);
 
   const getFriends = async () => {
-    const response = await fetch(
-      `http://localhost:8080/users/${userId}/friends`,
-      {
+    const response = await fetch(`http://localhost:8080/users/${userId}/friends`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       }
@@ -44,7 +42,7 @@ const FriendListWidget = ({ userId }) => {
             key={friend._id}
             friendId={friend._id}
             name={friend.username}
-          />
+          /> 
         ))}
       </Box>
     </WidgetWrapper>
