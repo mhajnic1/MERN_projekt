@@ -65,6 +65,7 @@ const CreatePost = () => {
 
           await response.json();
           navigate('/');
+          window.location.reload()
       } catch (err) {
         alert(err);
       } finally {

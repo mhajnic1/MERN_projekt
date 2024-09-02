@@ -14,7 +14,7 @@ const App = () => {
   const [searchedResults, setSearchedResults] = useState([]);
   const [searchTimeout, setSearchTimeout] = useState(null);
 
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state?.user);
   const token = useSelector((state) => state.token);
 
   useEffect(() => {
@@ -50,12 +50,12 @@ const App = () => {
           setUserPosts(result.data.reverse());
         }
       } catch (error) {
-        null
+        console.log(error)
       }
     };
 
     fetchUserPosts();
-  }, []);
+  }, [token, user?._id]);
 
   return (
     <BrowserRouter>
@@ -85,10 +85,13 @@ const App = () => {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/users/login" element={<Login />} />
           <Route path="/users/register" element={<Signup />} />
-          <Route path="/posts/:userId" element={
+          <Route
+            path="/posts/:userId"
+            element={
             <UserProfile
-              posts={userPosts}
-            />} />
+                posts={userPosts}
+            />}
+          />
         </Routes>
       </main>
     </BrowserRouter>

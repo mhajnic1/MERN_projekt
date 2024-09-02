@@ -31,6 +31,7 @@ const Navbar = ({ searchText, handleSearchChange }) => {
       setLogout()
     );
     navigate('/');
+    window.location.reload()
   };
 
   return (
