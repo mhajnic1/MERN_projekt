@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { logo } from '../assets';
 import SearchBar from './SearchBar'; // Import SearchBar
 import Login from './Login';
@@ -11,9 +11,11 @@ import { setLogout } from '../state';
 
 
 const Navbar = ({ searchText, handleSearchChange }) => {
+  const navigate = useNavigate();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const isAuth = Boolean(useSelector((state) => state.token));
+  const user = useSelector((state) => state?.user);
   const dispatch = useDispatch();
 
   const toggleLoginPopup = () => {
@@ -28,6 +30,7 @@ const Navbar = ({ searchText, handleSearchChange }) => {
     dispatch(
       setLogout()
     );
+    navigate('/');
   };
 
   return (
@@ -59,6 +62,10 @@ const Navbar = ({ searchText, handleSearchChange }) => {
             >
               Log out
             </button>
+
+            <Link to={`/posts/${user._id}`} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md">
+              {user.username}
+            </Link>
           </>
           
         ) : (

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
-import { Home, CreatePost } from './pages'; 
+import { Home, CreatePost, UserProfile } from './pages'; 
 import { Login, Signup } from './components';
 import { handleSearchChange } from './utils'; // Import the function
 
@@ -59,6 +59,7 @@ const App = () => {
           <Route path="/create-post" element={<CreatePost />} />
           <Route path="/users/login" element={<Login />} />
           <Route path="/users/register" element={<Signup />} />
+          <Route path="/posts/:userId" element={<UserProfile />} />
         </Routes>
       </main>
     </BrowserRouter>

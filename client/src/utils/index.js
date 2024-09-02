@@ -31,7 +31,7 @@ export const handleSearchChange = (e, setSearchText, allPosts, searchTimeout, se
     const timeout = setTimeout(() => {
       const searchResults = allPosts.filter(
         (item) =>
-          item.name.toLowerCase().includes(value.toLowerCase()) ||
+          item.username.toLowerCase().includes(value.toLowerCase()) ||
           item.prompt.toLowerCase().includes(value.toLowerCase())
       );
       setSearchedResults(searchResults);

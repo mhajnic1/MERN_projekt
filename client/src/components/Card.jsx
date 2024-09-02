@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { download } from '../assets';
 import { downloadImage } from '../utils';
+import { useDispatch, useSelector } from "react-redux";
+import { setPost } from "../state";
 import FlexBetween from './FlexBetween'; // Import FlexBetween
 
 const Card = ({ _id, username, prompt, photo, initialLikes = 0, initialComments = 0 }) => {
@@ -8,11 +10,31 @@ const Card = ({ _id, username, prompt, photo, initialLikes = 0, initialComments 
   // Local state for likes and comments
   const [likes, setLikes] = useState(initialLikes);
   const [comments, setComments] = useState(initialComments);
+  const [isComments, setIsComments] = useState(false);
+
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state?.token);
+  const loggedInUserId = useSelector((state) => state?.user._id);
+  const isLiked = Boolean(likes[loggedInUserId]);
+  const likeCount = Object.keys(likes).length;
 
   // Handle Like button click
   const handleLike = () => {
     setLikes(likes + 1);
     // You could also make an API call here to update the likes in your backend.
+  };
+
+  const patchLike = async () => {
+    const response = await fetch(`http://localhost:3001/posts/${_id}/like`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: loggedInUserId }),
+    });
+    const updatedPost = await response.json();
+    dispatch(setPost({ post: updatedPost }));
   };
 
   // Handle Comment button click

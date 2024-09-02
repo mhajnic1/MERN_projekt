@@ -13,7 +13,7 @@ const CreatePost = () => {
     prompt: '',
     photo: '',
   });
-
+  
   const user = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
 
@@ -50,8 +50,7 @@ const CreatePost = () => {
     e.preventDefault();
 
     if(form.prompt && form.photo){
-      setLoading(true);
-      console.log(user._id, user.username, form.prompt, form.photo)
+      setLoading(true);  
 
       try {
         const response = await fetch('http://localhost:8080/posts/post',
@@ -98,12 +97,12 @@ const CreatePost = () => {
 
       <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>      
         <div className="flex flex-col gap-5">
-          <FormField 
+          <FormField
             LabelName="Your name"
             type="text"
-            username="username"
-            placeholder="John Doe"
-            value={form.username}
+            name="username"
+            placeholder={user.username}
+            value={user.username}
             handleChange={handleChange}
           />
 
@@ -111,8 +110,8 @@ const CreatePost = () => {
           <FormField 
             LabelName="Prompt"
             type="text"
-            username="prompt"
-            placeholder="an astronaut lounging in a tropical resort in space, vaporwave"
+            name="prompt"
+            placeholder="An astronaut lounging in a tropical resort in space, vaporwave"
             value={form.prompt}
             handleChange={handleChange}
             isSurpriseMe
