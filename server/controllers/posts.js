@@ -88,3 +88,43 @@ export const likePost = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 };
+
+/* UPDATE: Add a Comment */
+export const addComment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId, username, text } = req.body;
+
+    // Validate the input
+    if (!userId || !username || !text) {
+      return res.status(400).json({ message: 'Invalid input data' });
+    }
+
+    // Find the post by ID
+    const post = await Post.findById(id);
+
+    if (!post) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+
+    // Create a new comment object
+    const newComment = {
+      userId,
+      username,
+      text,
+      createdAt: new Date(),
+    };
+
+    // Add the new comment to the comments array
+    post.comments.push(newComment);
+
+    // Save the updated post
+    await post.save();
+
+    res.status(200).json({ success: true, data: post });
+  } catch (err) {
+    console.error(err); // Log the error for debugging
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
