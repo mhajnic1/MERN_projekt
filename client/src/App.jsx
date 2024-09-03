@@ -22,6 +22,7 @@ const App = () => {
 
   const user = useSelector((state) => state?.user);
   const token = useSelector((state) => state.token);
+  const friendId = useSelector((state) => state?.friendId);
 
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
@@ -48,7 +49,7 @@ const App = () => {
   useEffect(() => {
     const fetchUserPosts = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/posts/${user._id}`, {
+        const response = await fetch(`http://localhost:8080/posts/${friendId ? friendId : user._id}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -64,7 +65,7 @@ const App = () => {
     };
 
     fetchUserPosts();
-  }, [token, user?._id]);
+  }, [friendId, token, user?._id]);
 
   return (
     <BrowserRouter>

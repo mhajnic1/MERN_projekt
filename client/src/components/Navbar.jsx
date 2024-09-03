@@ -6,7 +6,7 @@ import Login from './Login';
 import Signup from './Signup';
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { setLogout } from '../state';
+import { unsetFriend, setLogout } from '../state';
 
 
 
@@ -33,6 +33,10 @@ const Navbar = ({ searchText, handleSearchChange }) => {
     navigate('/');
     window.location.reload()
   };
+
+  const handleUser = () => {
+    dispatch(unsetFriend());
+  }
 
   return (
     <header className="w-full flex justify-between items-center bg-white sm:px-8 px-4 py-4 border-b border-b-[#e6ebf4]">
@@ -64,7 +68,8 @@ const Navbar = ({ searchText, handleSearchChange }) => {
               Log out
             </button>
 
-            <Link to={`/posts/${user._id}`} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md">
+            <Link to={`/posts/${user._id}`} className="font-inter font-medium bg-[#6469ff] text-white px-4 py-2 rounded-md"
+              onClick={handleUser}>
               {user.username}
             </Link>
           </>

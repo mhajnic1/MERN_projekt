@@ -2,7 +2,7 @@ import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setFriends } from "../state";
+import { setFriend, setFriends } from "../state";
 import FlexBetween from "./FlexBetween";
 
 const Friend = ({ friendId, name }) => {
@@ -40,6 +40,7 @@ const Friend = ({ friendId, name }) => {
       <FlexBetween gap="1rem">
         <Box
           onClick={() => {
+            dispatch(setFriend({ friendId }));
             navigate(`/posts/${friendId}`);
             //navigate(0);
           }}
