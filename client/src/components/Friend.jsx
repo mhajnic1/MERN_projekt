@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +17,6 @@ const Friend = ({ friendId, name }) => {
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
-  const medium = palette.neutral.medium;
 
   const isFriend = friends?.find((friend) => friend._id === friendId);
 

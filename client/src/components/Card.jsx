@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import { download } from '../assets';
 import { downloadImage } from '../utils';

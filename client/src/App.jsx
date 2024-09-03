@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { Home, CreatePost, UserProfile } from './pages'; 
 import { Login, Signup } from './components';
-import { handleSearchChange } from './utils'; // Import the function
+import { handleSearchChange } from './utils';
 import { useSelector } from "react-redux";
 
 import { createTheme } from "@mui/material/styles";
@@ -44,7 +44,7 @@ const App = () => {
     };
 
     fetchPosts();
-    
+
 
     const fetchUserPosts = async () => {
       try {

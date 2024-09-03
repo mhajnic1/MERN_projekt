@@ -1,5 +1,4 @@
-'use client';
-
+/* eslint-disable react/prop-types */
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { setLogin } from "../state";
@@ -14,7 +13,7 @@ const Signup = ({ toggleForm }) => {
 
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
-      toggleForm(); // Close the modal when clicking outside
+      toggleForm();
     }
   };
 
@@ -57,6 +56,7 @@ const Signup = ({ toggleForm }) => {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
