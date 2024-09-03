@@ -87,7 +87,8 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
           className="post-details" 
           sx={{
             position: 'absolute',
-            bottom: '3rem', // 2,8 ako zelimo da dira donji rub slike 
+            offsetBottom: '5rem',
+            transform: 'translateY(-100%)', // 2,8 ako zelimo da dira donji rub slike 
             left: 0,
             right: 0,
             backgroundColor: '#10131f',
@@ -100,7 +101,7 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
             overflowY: 'auto',
           }}
         >
-          {/* Container for prompt and download button */}
+          {/* Container for prompt*/}
           <Box
             sx={{
               display: 'flex',
@@ -113,13 +114,7 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
               {prompt}
             </Typography>
 
-            {/* Download Button */}
-            <IconButton 
-              onClick={() => downloadImage(_id, photo)} 
-              sx={{ bgcolor: 'transparent', border: 'none' }}
-            >
-              <DownloadIcon sx={{ color: 'white' }} /> 
-            </IconButton>
+            
           </Box>
         </Box>
   
@@ -145,9 +140,13 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
             </FlexBetween>
           </FlexBetween>
   
-          <IconButton>
-            <ShareOutlined />
-          </IconButton>
+          {/* Download Button */}
+          <IconButton 
+              onClick={() => downloadImage(_id, photo)} 
+              sx={{ bgcolor: 'transparent', border: 'none' }}
+            >
+              <DownloadIcon sx={{ color: 'black' }} /> 
+            </IconButton>
         </FlexBetween>
   
         {isComments && (

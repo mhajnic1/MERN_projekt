@@ -36,13 +36,18 @@ const Friend = ({ friendId, name }) => {
   };
 
   return (
-    <FlexBetween>
+    <FlexBetween
+    sx={{
+      alignItems: 'center',
+      mb: '0.5rem', // bottom margin za ime i ikonu
+    }}>
       <FlexBetween gap="1rem">
         <Box
           onClick={() => {
             dispatch(setFriend({ friendId }));
             navigate(`/posts/${friendId}`);
           }}
+          
         >
           <Typography
             color={main}
@@ -65,7 +70,7 @@ const Friend = ({ friendId, name }) => {
             sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
           >
             {isFriend ? (
-              <PersonRemoveOutlined sx={{ color: primaryDark }} />
+              <PersonRemoveOutlined sx={{ color: primaryDark  }} />
             ) : (
               <PersonAddOutlined sx={{ color: primaryDark }} />
             )}
