@@ -8,7 +8,7 @@ import { handleSearchChange } from './utils'; // Import the function
 import { useSelector } from "react-redux";
 
 import { createTheme } from "@mui/material/styles";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import { themeSettings } from "./theme";
 import { useMemo } from "react";
 
