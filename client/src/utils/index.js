@@ -14,10 +14,9 @@ export function getRandomPrompt(prompt) {
 }
 
 export async function downloadImage(_id, photo) {
-    FileSaver.saveAs(photo, `download-${_id}.jpg`); // Use backticks for template literals
+    FileSaver.saveAs(photo, `download-${_id}.jpg`);
 }
 
-// utils.js
 export const handleSearchChange = (e, setSearchText, allPosts, userPosts, searchTimeout, setSearchTimeout, setSearchedResults, setUserSearchedResults) => {
     const value = e.target.value;
     setSearchText(value);
@@ -27,7 +26,6 @@ export const handleSearchChange = (e, setSearchText, allPosts, userPosts, search
       clearTimeout(searchTimeout);
     }
   
-    // Set a new timeout
     const timeout = setTimeout(() => {
       const searchResults = allPosts.filter(
         (item) =>

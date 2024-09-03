@@ -1,7 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { logo } from '../assets';
-import SearchBar from './SearchBar'; // Import SearchBar
 import Login from './Login';
 import Signup from './Signup';
 import { useSelector } from "react-redux";
@@ -27,9 +27,7 @@ const Navbar = ({ searchText, handleSearchChange }) => {
   };
 
   const handleLogout = () => {
-    dispatch(
-      setLogout()
-    );
+    dispatch(setLogout());
     navigate('/');
   };
 

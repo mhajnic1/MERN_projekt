@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from 'react';
 import { Loader } from '../components';
 import PostList from '../components/PostList';
@@ -45,38 +46,38 @@ const UserProfile = ({ posts, searchText }) => {
   }, [friendId]);
 
 
-return (
-  <>
-    <Box 
-    width="100%"
-    padding="2rem 6%"
-    display={isNonMobileScreens ? "flex" : "block"}
-    gap="0.5rem"
-    justifyContent="space-between"
-    >
-      <Box>
-        <h1 className="flex justify-content items-center font-extrabold text-[#222328] text-[32px]">
-          Browse through {!isFriend ? "your" : `${username}'s`} collection
-        </h1>
-      </Box>
+  return (
+    <>
+      <Box 
+      width="100%"
+      padding="2rem 6%"
+      display={isNonMobileScreens ? "flex" : "block"}
+      gap="0.5rem"
+      justifyContent="space-between"
+      >
+        <Box>
+          <h1 className="flex justify-content items-center font-extrabold text-[#222328] text-[32px]">
+            Browse through {!isFriend ? "your" : `${username}'s`} collection
+          </h1>
+        </Box>
 
-      {loading ? (
-         <Box
-         flexBasis={isNonMobileScreens ? "42%" : undefined}
-         mt={isNonMobileScreens ? undefined : "2rem"}
-       >
-          <Loader />
-        </Box>
-      ) : (
-        <PostList posts={posts} searchText={searchText} />
-      )}
-        <Box flexBasis="26%">
-          <Box m="2rem 0" />
-          <FriendListWidget userId={friendId ? friendId : userId} />
-        </Box>
-    </Box>
-  </>
-);
+        {loading ? (
+          <Box
+          flexBasis={isNonMobileScreens ? "42%" : undefined}
+          mt={isNonMobileScreens ? undefined : "2rem"}
+        >
+            <Loader />
+          </Box>
+        ) : (
+          <PostList posts={posts} searchText={searchText} />
+        )}
+          <Box flexBasis="26%">
+            <Box m="2rem 0" />
+            <FriendListWidget userId={friendId ? friendId : userId} />
+          </Box>
+      </Box>
+    </>
+  );
 };
 
 export default UserProfile;
