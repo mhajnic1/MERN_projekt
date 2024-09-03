@@ -8,9 +8,9 @@ import FlexBetween from "./FlexBetween";
 const Friend = ({ friendId, name }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const id = useSelector((state) => state.user._id);
+  const id = useSelector((state) => state.user?._id);
   const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  const friends = useSelector((state) => state.user?.friends);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -18,7 +18,7 @@ const Friend = ({ friendId, name }) => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  const isFriend = friends.find((friend) => friend._id === friendId);
+  const isFriend = friends?.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
     const response = await fetch(
@@ -42,7 +42,6 @@ const Friend = ({ friendId, name }) => {
           onClick={() => {
             dispatch(setFriend({ friendId }));
             navigate(`/posts/${friendId}`);
-            //navigate(0);
           }}
         >
           <Typography
@@ -60,17 +59,19 @@ const Friend = ({ friendId, name }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      <IconButton
-        onClick={() => patchFriend()}
-        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-      >
-        {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
-        ) : (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
+        {friendId !== id && token && (
+          <IconButton
+            onClick={() => patchFriend()}
+            sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+          >
+            {isFriend ? (
+              <PersonRemoveOutlined sx={{ color: primaryDark }} />
+            ) : (
+              <PersonAddOutlined sx={{ color: primaryDark }} />
+            )}
+          </IconButton>
         )}
-      </IconButton>
-    </FlexBetween>
+      </FlexBetween>
   );
 };
 

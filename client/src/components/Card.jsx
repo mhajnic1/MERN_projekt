@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { download } from '../assets';
 import { downloadImage } from '../utils';
 import { useDispatch, useSelector } from "react-redux";
@@ -6,12 +6,7 @@ import { setPost } from "../state";
 import FlexBetween from './FlexBetween';
 import Friend from "./Friend";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
-import {
-  FavoriteBorderOutlined,
-  ChatBubbleOutlineOutlined,
-  FavoriteOutlined,
-  ShareOutlined,
-} from "@mui/icons-material";
+import { FavoriteBorderOutlined, ChatBubbleOutlineOutlined, FavoriteOutlined, ShareOutlined } from "@mui/icons-material";
 import DownloadIcon from '@mui/icons-material/Download';
 import WidgetWrapper from './WidgetWrapper';
 
@@ -21,8 +16,6 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user?._id);
 
-  // Local state for likes and comments
-  // Initialize likes with Map
   const [likes, setLikes] = useState(new Map(Object.entries(initialLikes)));
   const [comments, setComments] = useState(initialComments);
 
@@ -37,17 +30,6 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
   const main = palette.neutral.main;
   const primary = palette.primary.main;
 
-
-  useEffect(() => {
-    const fetchLikes = async () => {
-      const response = await fetch(`http://localhost:8080/posts/${_id}`);
-      const data = await response.json();
-      setLikes(new Map(Object.entries(data.likes || {}))); // Update state with fetched likes
-    };
-
-    fetchLikes();
-  }, [_id]);
-
   const patchLike = async () => {
     const response = await fetch(`http://localhost:8080/posts/${_id}/like`, {
       method: "PATCH",
@@ -57,14 +39,12 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
       },
       body: JSON.stringify({ userId: loggedInUserId }),
     });
-    if (!response.ok) {
-      const text = await response.text(); // Read response as text for debugging
-      console.error(`Error response: ${text}`);
-      throw new Error(`HTTP error! status: ${response.status}`);
+    if (response.ok) {
+      const data = await response.json();
+      setLikes(new Map(Object.entries(data.likes || {})));
     }
 
-    const data = await response.json();
-    setLikes(new Map(Object.entries(data.likes || {})));
+    
   };
 
   // Handle Comment button click

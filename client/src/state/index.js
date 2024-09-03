@@ -21,6 +21,7 @@ export const authSlice = createSlice({
     setLogout: (state) => {
       state.user = null;
       state.token = null;
+      state.friendId = null;
     },
     setFriend: (state, action) => {
       state.friendId = action.payload.friendId;

@@ -67,7 +67,6 @@ export const likePost = async (req, res) => {
 
     // Convert the Map to a plain object for JSON serialization
     const likes = Object.fromEntries(post.likes.entries());
- // Convert Map to plain object
 
     //const isLiked = likes[userId];
     const isLiked = post.likes.get(userId);

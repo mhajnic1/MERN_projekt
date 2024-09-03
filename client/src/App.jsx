@@ -44,9 +44,8 @@ const App = () => {
     };
 
     fetchPosts();
-  }, []);
+    
 
-  useEffect(() => {
     const fetchUserPosts = async () => {
       try {
         const response = await fetch(`http://localhost:8080/posts/${friendId ? friendId : user._id}`, {
@@ -66,6 +65,27 @@ const App = () => {
 
     fetchUserPosts();
   }, [friendId, token, user?._id]);
+
+/*   useEffect(() => {
+    const fetchUserPosts = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/posts/${friendId ? friendId : user._id}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json' },
+        });
+        if (response.ok) {
+          const result = await response.json();
+          setUserPosts(result.data.reverse());
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    };
+
+    fetchUserPosts();
+  }, [friendId, token, user?._id]); */
 
   return (
     <BrowserRouter>
