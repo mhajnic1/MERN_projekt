@@ -23,7 +23,7 @@ const FriendListWidget = ({ userId }) => {
 
   useEffect(() => {
     getFriends();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [dispatch, token, userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <WidgetWrapper>
@@ -37,13 +37,17 @@ const FriendListWidget = ({ userId }) => {
       <Divider />
       
       <Box display="flex" flexDirection="column" gap="1.5rem" paddingTop="0.5rem">
-        {friends.map((friend) => (
-          <Friend
-            key={friend._id}
-            friendId={friend._id}
-            name={friend.username}
-          /> 
-        ))}
+        {Array.isArray(friends) && friends.length > 0 ? (
+          friends.map((friend) => (
+            <Friend
+              key={friend._id}
+              friendId={friend._id}
+              name={friend.username}
+            /> 
+          ))
+        ) : (
+          <Typography>No friends found.</Typography>
+        )}
       </Box>
     </WidgetWrapper>
   );

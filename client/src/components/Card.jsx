@@ -4,15 +4,18 @@ import { downloadImage } from '../utils';
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../state";
 import FlexBetween from './FlexBetween';
+import Friend from "./Friend";
 import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
 import {
-  ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
+  ChatBubbleOutlineOutlined,
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
+import DownloadIcon from '@mui/icons-material/Download';
+import WidgetWrapper from './WidgetWrapper';
 
-const Card = ({ _id, username, prompt, photo, initialLikes, initialComments }) => {
+const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComments }) => {
   
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
@@ -75,51 +78,115 @@ const Card = ({ _id, username, prompt, photo, initialLikes, initialComments }) =
 
 
   return (
-    <div className="rounded-xl group relative shadow-card hover:shadow-cardhover card mb-6">
-      {/* Post Image */}
-      <img 
-        className="w-full h-auto object-cover rounded-xl"
-        src={photo}
-        alt={prompt}
+    <WidgetWrapper>
+      <Friend
+        friendId={userId}
+        name={username}
       />
+      
+      <Box 
+        className="rounded-xl shadow-card hover:shadow-cardhover card mb-6"
+        sx={{
+          position: 'relative',
+          overflow: 'hidden',
+          '&:hover .post-details': {
+            display: 'flex', 
+          },
+        }}
+      >
+        {/* Post Image */}
+        <img 
+          className="w-full h-auto object-cover rounded-xl"
+          src={photo}
+          alt={prompt}
+        />
+        
+        {/* Post Details */}
+        <Box 
+          className="post-details" 
+          sx={{
+            position: 'absolute',
+            bottom: '3rem', // 2,8 ako zelimo da dira donji rub slike 
+            left: 0,
+            right: 0,
+            backgroundColor: '#10131f',
+            margin: '0rem', // 0.5 ako zelimo da izgleda kao hover
+            padding: '1rem',
+            borderRadius: '0.75rem',
+            display: 'none', // Default to hidden
+            flexDirection: 'column',
+            maxHeight: '94.5%',
+            overflowY: 'auto',
+          }}
+        >
+          {/* Container for prompt and download button */}
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center', 
+            }}
+          >
+            {/* Prompt Text */}
+            <Typography variant="body2" color="white" sx={{ flex: 1 }}>
+              {prompt}
+            </Typography>
 
-      {/* Post Details */}
-      <div className="group-hover:flex flex-col max-h-[94.5%] hidden absolute bottom-8 left-0 right-0 bg-[#10131f] m-2 p-4 rounded-md">
-        <p className="text-white text-md overflow-y-auto prompt">{prompt}</p>
-
-        {/* Name and Download Button */}
-        <FlexBetween className="mt-5">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-full bg-green-700 flex justify-center items-center text-white text-xs font-bold">
-              {username[0]}
-            </div>
-            <p className="text-white text-sm">{username}</p>
-          </div>
-          <button type="button" onClick={() => downloadImage(_id, photo)} className="outline-none bg-transparent border-none">
-            <img src={download} alt="download" className="w-6 h-6 object-contain invert" />
-          </button>
-        </FlexBetween>
-      </div>
-
-      {/* Likes and Comments Section */}
-      <FlexBetween className="mt-4 px-4">
-        <div className="flex items-center gap-2">
-        <IconButton onClick={patchLike}>
-              {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
-              ) : (
-                <FavoriteBorderOutlined />
-              )}
+            {/* Download Button */}
+            <IconButton 
+              onClick={() => downloadImage(_id, photo)} 
+              sx={{ bgcolor: 'transparent', border: 'none' }}
+            >
+              <DownloadIcon sx={{ color: 'white' }} /> 
             </IconButton>
-            <Typography>{likeCount}</Typography>
-        </div>
-        <div className="flex items-center gap-2">
-          <button type="button" onClick={handleComment} className="text-[#6469ff]">💬 Comment</button>
-          <span className="text-sm text-gray-500">{comments} Comments</span>
-        </div>
-      </FlexBetween>
-    </div>
+          </Box>
+        </Box>
+  
+        {/* Likes and Comments Section */}
+        <FlexBetween className="mt-4 px-4">
+          <FlexBetween gap="1rem">
+            <FlexBetween gap="0.3rem">
+              <IconButton onClick={patchLike}>
+                {isLiked ? (
+                  <FavoriteOutlined sx={{ color: primary }} />
+                ) : (
+                  <FavoriteBorderOutlined />
+                )}
+              </IconButton>
+              <Typography>{likeCount}</Typography>
+            </FlexBetween>
+  
+            <FlexBetween gap="0.3rem">
+              <IconButton onClick={() => setIsComments(!isComments)}>
+                <ChatBubbleOutlineOutlined />
+              </IconButton>
+              <Typography>{comments.length}</Typography>
+            </FlexBetween>
+          </FlexBetween>
+  
+          <IconButton>
+            <ShareOutlined />
+          </IconButton>
+        </FlexBetween>
+  
+        {isComments && (
+          <Box mt="0.5rem">
+            {comments.map((comment, i) => (
+              <Box key={`${username}-${i}`}>
+                <Divider />
+                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                  {comment}
+                </Typography>
+              </Box>
+            ))}
+            <Divider />
+          </Box>
+        )}
+      </Box>
+    </WidgetWrapper>
   );
+  
+
 };
 
 export default Card;
