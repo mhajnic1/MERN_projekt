@@ -16,8 +16,8 @@ const RenderCards = ({ data, title }) => {
           username={post.username}
           prompt={post.prompt}
           photo={post.photo} // Fallback image if photo is not available
-          initialLikes={0}
-          initialComments={0}
+          initialLikes={post.likes}
+          initialComments={post.comments}
         />
       ))}
     </div>

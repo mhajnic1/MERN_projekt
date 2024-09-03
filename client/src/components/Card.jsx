@@ -1,31 +1,52 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { download } from '../assets';
 import { downloadImage } from '../utils';
 import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "../state";
-import FlexBetween from './FlexBetween'; // Import FlexBetween
+import FlexBetween from './FlexBetween';
+import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import {
+  ChatBubbleOutlineOutlined,
+  FavoriteBorderOutlined,
+  FavoriteOutlined,
+  ShareOutlined,
+} from "@mui/icons-material";
 
-const Card = ({ _id, username, prompt, photo, initialLikes = 0, initialComments = 0 }) => {
-
-  // Local state for likes and comments
-  const [likes, setLikes] = useState(initialLikes);
-  const [comments, setComments] = useState(initialComments);
-  const [isComments, setIsComments] = useState(false);
-
+const Card = ({ _id, username, prompt, photo, initialLikes, initialComments }) => {
+  
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user?._id);
-  const isLiked = Boolean(likes[loggedInUserId]);
-  const likeCount = Object.keys(likes).length;
 
-  // Handle Like button click
-  const handleLike = () => {
-    setLikes(likes + 1);
-    // You could also make an API call here to update the likes in your backend.
-  };
+  // Local state for likes and comments
+  // Initialize likes with Map
+  const [likes, setLikes] = useState(new Map(Object.entries(initialLikes)));
+  const [comments, setComments] = useState(initialComments);
+
+  // Check if the post is liked by the current user
+  const isLiked = likes.has(loggedInUserId);
+  const likeCount = likes.size;
+  const [isComments, setIsComments] = useState(false);
+  
+ 
+
+  const { palette } = useTheme();
+  const main = palette.neutral.main;
+  const primary = palette.primary.main;
+
+
+  useEffect(() => {
+    const fetchLikes = async () => {
+      const response = await fetch(`http://localhost:8080/posts/${_id}`);
+      const data = await response.json();
+      setLikes(new Map(Object.entries(data.likes || {}))); // Update state with fetched likes
+    };
+
+    fetchLikes();
+  }, [_id]);
 
   const patchLike = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${_id}/like`, {
+    const response = await fetch(`http://localhost:8080/posts/${_id}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -33,8 +54,14 @@ const Card = ({ _id, username, prompt, photo, initialLikes = 0, initialComments 
       },
       body: JSON.stringify({ userId: loggedInUserId }),
     });
-    const updatedPost = await response.json();
-    dispatch(setPost({ post: updatedPost }));
+    if (!response.ok) {
+      const text = await response.text(); // Read response as text for debugging
+      console.error(`Error response: ${text}`);
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    setLikes(new Map(Object.entries(data.likes || {})));
   };
 
   // Handle Comment button click
@@ -77,8 +104,14 @@ const Card = ({ _id, username, prompt, photo, initialLikes = 0, initialComments 
       {/* Likes and Comments Section */}
       <FlexBetween className="mt-4 px-4">
         <div className="flex items-center gap-2">
-          <button type="button" onClick={handleLike} className="text-[#6469ff]">👍 Like</button>
-          <span className="text-sm text-gray-500">{likes} Likes</span>
+        <IconButton onClick={patchLike}>
+              {isLiked ? (
+                <FavoriteOutlined sx={{ color: primary }} />
+              ) : (
+                <FavoriteBorderOutlined />
+              )}
+            </IconButton>
+            <Typography>{likeCount}</Typography>
         </div>
         <div className="flex items-center gap-2">
           <button type="button" onClick={handleComment} className="text-[#6469ff]">💬 Comment</button>

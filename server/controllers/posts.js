@@ -64,17 +64,23 @@ export const likePost = async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body;
     const post = await Post.findById(id);
+
+    // Convert the Map to a plain object for JSON serialization
+    const likes = Object.fromEntries(post.likes.entries());
+ // Convert Map to plain object
+
+    //const isLiked = likes[userId];
     const isLiked = post.likes.get(userId);
 
     if (isLiked) {
-      post.likes.delete(userId);
+      delete likes[userId];
     } else {
-      post.likes.set(userId, true);
+      likes[userId] = true;
     }
 
     const updatedPost = await Post.findByIdAndUpdate(
       id,
-      { likes: post.likes },
+      { likes: likes }, // Update with plain object
       { new: true }
     );
 
