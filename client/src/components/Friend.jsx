@@ -23,20 +23,6 @@ const Friend = ({ friendId, name }) => {
 
   const isFriend = friends?.find((friend) => friend._id === friendId);
 
-  const UserList = () => {
-    useEffect(() => {
-      // Retrieve the saved scroll position
-      const savedScrollPosition = sessionStorage.getItem('scrollPosition');
-  
-      // If there is a saved scroll position, scroll to that position
-      if (savedScrollPosition) {
-        window.scrollTo(0, parseInt(savedScrollPosition, 10));
-        // Optionally clear the saved position to prevent scrolling again
-        sessionStorage.removeItem('scrollPosition');
-      }
-    }, []);
-  };
-
   const patchFriend = async () => {
     const response = await fetch(
       `http://localhost:8080/users/${id}/${friendId}`,
