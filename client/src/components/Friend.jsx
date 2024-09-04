@@ -1,24 +1,24 @@
 /* eslint-disable react/prop-types */
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setFriend, setFriends } from "../state";
 import FlexBetween from "./FlexBetween";
 
-const Friend = ({ friendId, name }) => {
+const Friend = ({ friendId, name, postId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const id = useSelector((state) => state.user?._id);
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user?.friends);
+  const isFriend = friends?.find((friend) => friend._id === friendId);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
-
-  const isFriend = friends?.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
     const response = await fetch(
@@ -33,6 +33,20 @@ const Friend = ({ friendId, name }) => {
     );
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
+  };
+
+  const deletePost = async () => {
+    const response = await fetch(`http://localhost:8080/posts/${postId}/delete`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId: id }),
+    });
+    if (response.ok) {
+      window.location.reload();
+    }
   };
 
   return (
@@ -64,18 +78,27 @@ const Friend = ({ friendId, name }) => {
           </Typography>
         </Box>
       </FlexBetween>
-        {friendId !== id && token && (
+      {token && (
+        friendId !== id ? (
           <IconButton
             onClick={() => patchFriend()}
             sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
           >
             {isFriend ? (
-              <PersonRemoveOutlined sx={{ color: primaryDark  }} />
+              <PersonRemoveOutlined sx={{ color: primaryDark }} />
             ) : (
               <PersonAddOutlined sx={{ color: primaryDark }} />
             )}
           </IconButton>
-        )}
+        ) : postId && (
+          <IconButton
+            onClick={() => deletePost()}
+            sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+          >
+            <DeleteIcon sx={{ color: primaryDark }} />
+          </IconButton>
+        )
+      )}
       </FlexBetween>
   );
 };

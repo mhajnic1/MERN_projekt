@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { Loader } from '../components';
 import PostList from '../components/PostList';

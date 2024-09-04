@@ -46,37 +46,40 @@ const UserProfile = ({ posts, searchText }) => {
   }, [friendId]);
 
 
-  return (
-    <>
-      <Box 
+return (
+  <>
+    <Box 
       width="100%"
       padding="2rem 6%"
       display={isNonMobileScreens ? "flex" : "block"}
       gap="0.5rem"
       justifyContent="space-between"
+    >
+      <Box
+        flexBasis={isNonMobileScreens ? "74%" : undefined}
+        mt={isNonMobileScreens ? undefined : "2rem"}
       >
         <Box>
-          <h1 className="flex justify-content items-center font-extrabold text-[#222328] text-[32px]">
-            Browse through {!isFriend ? "your" : `${username}'s`} collection
+          <h1 className="font-extrabold text-[#222328] text-[32px]">
+          {(!isFriend || friendId === userId) ? "Your" : `${username}'s`} profile
           </h1>
+          <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">
+          Browse through {(!isFriend || friendId === userId) ? "your" : `${username}'s`} collection
+          </p>
         </Box>
 
         {loading ? (
-          <Box
-          flexBasis={isNonMobileScreens ? "42%" : undefined}
-          mt={isNonMobileScreens ? undefined : "2rem"}
-        >
-            <Loader />
-          </Box>
+          <Loader />
         ) : (
           <PostList posts={posts} searchText={searchText} />
         )}
+      </Box>
           <Box flexBasis="26%">
             <Box m="2rem 0" />
             <FriendListWidget userId={friendId ? friendId : userId} />
           </Box>
-      </Box>
-    </>
+    </Box>
+  </>
   );
 };
 

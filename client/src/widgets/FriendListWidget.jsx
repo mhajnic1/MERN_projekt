@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme, Divider } from "@mui/material";
+import { Box, Typography, Divider } from "@mui/material";
 import Friend from "../components/Friend";
 import WidgetWrapper from "../components/WidgetWrapper";
 import { useEffect } from "react";
@@ -7,14 +7,16 @@ import { setFriends } from "../state";
 
 const FriendListWidget = ({ userId }) => {
   const dispatch = useDispatch();
-  const { palette } = useTheme();
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
 
   const getFriends = async () => {
     const response = await fetch(`http://localhost:8080/users/${userId}/friends`, {
         method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+         },
       }
     );
     const data = await response.json();
@@ -43,6 +45,7 @@ const FriendListWidget = ({ userId }) => {
               key={friend._id}
               friendId={friend._id}
               name={friend.username}
+              postId={false}
             /> 
           ))
         ) : (

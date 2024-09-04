@@ -1,35 +1,29 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
-import { download } from '../assets';
 import { downloadImage } from '../utils';
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "../state";
 import FlexBetween from './FlexBetween';
 import Friend from "./Friend";
 import { Box, Divider, IconButton, Typography, useTheme, TextField, Button } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
-import { FavoriteBorderOutlined, ChatBubbleOutlineOutlined, FavoriteOutlined, ShareOutlined } from "@mui/icons-material";
+import { FavoriteBorderOutlined, ChatBubbleOutlineOutlined, FavoriteOutlined } from "@mui/icons-material";
 import DownloadIcon from '@mui/icons-material/Download';
 import WidgetWrapper from './WidgetWrapper';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComments }) => {
   
-  const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
-  const loggedInUserId = useSelector((state) => state.user?._id);
+  const loggedInUser = useSelector((state) => state?.user);
 
   const [likes, setLikes] = useState(new Map(Object.entries(initialLikes)));
-  
-
-  // Check if the post is liked by the current user
-  const isLiked = likes.has(loggedInUserId);
+  const isLiked = likes.has(loggedInUser?._id);
   const likeCount = likes.size;
-  const [isComments, setIsComments] = useState(false);
   const [comments, setComments] = useState(initialComments);
+  const [isComments, setIsComments] = useState(false);
   const [newComment, setNewComment] = useState(""); 
 
   const { palette } = useTheme();
-  const main = palette.neutral.main;
   const primary = palette.primary.main;
 
   const patchLike = async () => {
@@ -39,7 +33,7 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId: loggedInUserId }),
+      body: JSON.stringify({ userId: loggedInUser?._id }),
     });
     if (response.ok) {
       const data = await response.json();
@@ -56,8 +50,8 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId: loggedInUserId,
-          username: username, // Make sure this is correctly set
+          userId: loggedInUser?._id,
+          username: loggedInUser?.username,
           text: newComment,
         }),
       });
@@ -70,20 +64,29 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
       // Handle the response data, e.g., update state with new comments
       console.log('Comment submitted successfully', data);
       setComments(data.data.comments);
-      setNewComment(""); // Clear the input field
+      setNewComment("");
     } catch (error) {
       console.error('Error submitting comment:', error);
     }
   };
   
-  
+  const handleDeleteComment = async (commentid) => {
+    console.log(commentid)
+  }
 
   const formatTimestamp = (timestamp) => {
     const date = new Date(timestamp);
+  
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
+    const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+  
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
+  
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
+  
 
 
 
@@ -92,6 +95,7 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
       <Friend
         friendId={userId}
         name={username}
+        postId={_id}
       />
       
       <Box 
@@ -199,6 +203,14 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     {formatTimestamp(comment.createdAt)}
                   </Typography>
+                  {comment.userId === loggedInUser._id ?
+                  <IconButton
+                    sx={{ color: 'text.secondary', padding: 0 }}
+                    onClick={() => handleDeleteComment(comment._id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                  : null}
                 </Box>
                 <Typography sx={{ mt: '0.5rem' }}>
                   {comment.text}

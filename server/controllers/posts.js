@@ -79,7 +79,7 @@ export const likePost = async (req, res) => {
 
     const updatedPost = await Post.findByIdAndUpdate(
       id,
-      { likes: likes }, // Update with plain object
+      { likes: likes },
       { new: true }
     );
 
@@ -89,25 +89,22 @@ export const likePost = async (req, res) => {
   }
 };
 
-/* UPDATE: Add a Comment */
+
 export const addComment = async (req, res) => {
   try {
     const { id } = req.params;
     const { userId, username, text } = req.body;
 
-    // Validate the input
     if (!userId || !username || !text) {
       return res.status(400).json({ message: 'Invalid input data' });
     }
 
-    // Find the post by ID
     const post = await Post.findById(id);
 
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    // Create a new comment object
     const newComment = {
       userId,
       username,
@@ -115,16 +112,28 @@ export const addComment = async (req, res) => {
       createdAt: new Date(),
     };
 
-    // Add the new comment to the comments array
     post.comments.push(newComment);
-
-    // Save the updated post
     await post.save();
 
     res.status(200).json({ success: true, data: post });
   } catch (err) {
-    console.error(err); // Log the error for debugging
+    console.error(err);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
+/* DELETE */
+export const deletePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    //const { userId } = req.body;
+    const deletedPost = await Post.findByIdAndDelete(id);
+
+    if (!deletedPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    res.status(200).json({ success: true, message: "Post deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
