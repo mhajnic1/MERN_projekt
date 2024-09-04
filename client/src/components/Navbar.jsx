@@ -135,19 +135,17 @@ const Navbar = ({ searchText, handleSearchChange }) => {
               Create
             </Link>
 
-            <IconButton 
-              onClick={handleLogout}
-              
-            >
-              <LogoutIcon style={{ fontSize: 40 }}/>
-              
-            </IconButton>
-
             <Link to={`/posts/${user._id}`}
               onClick={handleUser}>
               <AccountBoxIcon style={{ fontSize: 40 }}/>
               {user.username}
             </Link>
+
+            <IconButton 
+              onClick={handleLogout}>
+              <LogoutIcon style={{ fontSize: 40 }}/>
+            </IconButton>
+            
 
             {/* Notification Dropdown */}
             <Menu
