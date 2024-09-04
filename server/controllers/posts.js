@@ -3,6 +3,7 @@ import { v2 as cloudinary } from 'cloudinary';
 
 import Post from "../models/Post.js";
 import User from "../models/User.js";
+import { createNotification } from '../ioInit/notificationUtils.js';
 
 dotenv.config();
 cloudinary.config({
@@ -10,6 +11,10 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+
+
+
 
 /* CREATE */
 export const createPost = async (req, res) => {
@@ -29,13 +34,31 @@ export const createPost = async (req, res) => {
     });
     await newPost.save();
 
+    // Find the user's friends
+    const friends = user.friends;
+
+    // Create notifications for each friend
+    const notifications = friends.map(friendId => ({
+      userId: friendId,
+      message: `${user.username} has posted something new.`,
+      postId: newPost._id,
+    }));
+
+    // Insert notifications into the database and emit them in real time
+    for (const notificationData of notifications) {
+      await createNotification(notificationData);
+    }
+
     const posts = await Post.find();
     res.status(201).json({data: posts});
-    //res.status(201).json({ success: true, data: newPost });
   } catch (err) {
     res.status(409).json({ message: err.message });
   }
 };
+
+
+
+
 
 /* READ */
 export const getFeedPosts = async (req, res) => {
@@ -159,3 +182,5 @@ export const deleteComment = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
