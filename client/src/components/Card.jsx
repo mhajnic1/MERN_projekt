@@ -68,7 +68,7 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
   
   const handleDeleteComment = async (commentId) => {
     try {
-      const response = await fetch(`http://localhost:8080/posts/${_id}/${commentId}/delete`, {
+      const response = await fetch(`http://localhost:8080/posts/${_id}/${commentId}/deletecomment`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -215,7 +215,7 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     {formatTimestamp(comment.createdAt)}
                   </Typography>
-                  {comment.userId === loggedInUser._id ?
+                  {comment.userId === loggedInUser?._id ?
                   <IconButton
                     sx={{ color: 'text.secondary', padding: 0 }}
                     onClick={() => handleDeleteComment(comment._id)}

@@ -47,19 +47,21 @@ const App = () => {
 
 
     const fetchUserPosts = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/posts/${friendId ? friendId : user._id}`, {
-          method: 'GET',
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json' },
-        });
-        if (response.ok) {
-          const result = await response.json();
-          setUserPosts(result.data.reverse());
+      if (token) {
+        try {
+          const response = await fetch(`http://localhost:8080/posts/${friendId ? friendId : user._id}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json' },
+          });
+          if (response.ok) {
+            const result = await response.json();
+            setUserPosts(result.data.reverse());
+          }
+        } catch (error) {
+          console.error(error)
         }
-      } catch (error) {
-        console.error(error)
       }
     };
 

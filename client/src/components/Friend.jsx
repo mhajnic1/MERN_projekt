@@ -23,7 +23,7 @@ const Friend = ({ friendId, name, postId }) => {
   const primaryDark = palette.primary.dark;
   const main = palette.neutral.main;
 
-  const patchFriend = async () => {
+  const addRemoveFriend = async () => {
     const response = await fetch(
       `http://localhost:8080/users/${id}/${friendId}`,
       {
@@ -86,7 +86,7 @@ const Friend = ({ friendId, name, postId }) => {
       {token && (
         friendId !== id ? (
           <IconButton
-            onClick={() => patchFriend()}
+            onClick={() => addRemoveFriend()}
             sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
           >
             {isFriend ? (
