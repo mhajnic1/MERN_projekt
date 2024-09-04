@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setFriend, setFriends } from "../state";
 import FlexBetween from "./FlexBetween";
+import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+
 
 const Friend = ({ friendId, name }) => {
   const dispatch = useDispatch();
@@ -19,6 +22,20 @@ const Friend = ({ friendId, name }) => {
   const main = palette.neutral.main;
 
   const isFriend = friends?.find((friend) => friend._id === friendId);
+
+  const UserList = () => {
+    useEffect(() => {
+      // Retrieve the saved scroll position
+      const savedScrollPosition = sessionStorage.getItem('scrollPosition');
+  
+      // If there is a saved scroll position, scroll to that position
+      if (savedScrollPosition) {
+        window.scrollTo(0, parseInt(savedScrollPosition, 10));
+        // Optionally clear the saved position to prevent scrolling again
+        sessionStorage.removeItem('scrollPosition');
+      }
+    }, []);
+  };
 
   const patchFriend = async () => {
     const response = await fetch(
@@ -44,8 +61,10 @@ const Friend = ({ friendId, name }) => {
       <FlexBetween gap="1rem">
         <Box
           onClick={() => {
+            sessionStorage.setItem('scrollPosition', window.scrollY);
             dispatch(setFriend({ friendId }));
             navigate(`/posts/${friendId}`);
+            window.scrollTo(0, 0);
           }}
           
         >
