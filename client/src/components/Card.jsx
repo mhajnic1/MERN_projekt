@@ -56,22 +56,34 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
         }),
       });
   
-      if (!response.ok) {
-        throw new Error('Failed to submit comment');
+      if (response.ok) {
+        const data = await response.json();
+        setComments(data.data.comments);
+        setNewComment("");
       }
-  
-      const data = await response.json();
-      // Handle the response data, e.g., update state with new comments
-      console.log('Comment submitted successfully', data);
-      setComments(data.data.comments);
-      setNewComment("");
     } catch (error) {
       console.error('Error submitting comment:', error);
     }
   };
   
-  const handleDeleteComment = async (commentid) => {
-    console.log(commentid)
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/posts/${_id}/${commentId}/delete`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        }
+      })
+      ;
+      if (response.ok) {
+        const data = await response.json();
+        setComments(data.data.comments);
+        setNewComment("");
+      }
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+    }
   }
 
   const formatTimestamp = (timestamp) => {
