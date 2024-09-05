@@ -1,13 +1,12 @@
-/* eslint-disable react/prop-types */
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { setLogin } from "../state";
 
 const Signup = ({ toggleForm }) => {
-
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [signupError, setSignupError] = useState(''); // To store signup errors
   const modalRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -19,6 +18,7 @@ const Signup = ({ toggleForm }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSignupError(''); // Reset the error message
 
     try {
       const response = await fetch('http://localhost:8080/auth/register', {
@@ -31,22 +31,24 @@ const Signup = ({ toggleForm }) => {
 
       const data = await response.json();
 
-      if (data) {
+      if (response.ok) {
+        // Dispatch login action and close form only if signup is successful
         dispatch(
           setLogin({
             user: data.user,
             token: data.token,
           })
         );
-        toggleForm();
+        toggleForm(); // Close the modal if signup is successful
       } else {
-        console.log('Signup failed:', data.message);
+        // Set error message and keep the form open if signup fails
+        setSignupError(data.message);
       }
       
     } catch (error) {
+      setSignupError('An error occurred. Please try again.');
       console.error(error);
     }
-
   };
 
   useEffect(() => {
@@ -108,6 +110,14 @@ const Signup = ({ toggleForm }) => {
               required
             />
           </div>
+
+          {/* Display error message */}
+          {signupError && (
+            <div className="text-red-500 text-sm mb-4">
+              {signupError}
+            </div>
+          )}
+
           <div className='flex justify-center'>
             <button
               className='w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none'
