@@ -7,6 +7,7 @@ import { setLogin } from "../state";
 const Login = ({ toggleForm }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
   const modalRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -18,6 +19,7 @@ const Login = ({ toggleForm }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoginError('');
 
     try {
       const response = await fetch('http://localhost:8080/auth/login', {
@@ -30,7 +32,7 @@ const Login = ({ toggleForm }) => {
     
       const data = await response.json();
 
-      if (data) {
+      if (response.ok) {
         dispatch(
           setLogin({
             user: data.user,
@@ -39,10 +41,12 @@ const Login = ({ toggleForm }) => {
         );
         toggleForm();
       } else {
+        setLoginError(data.message || 'Invalid email or password'); 
         console.log('Login failed:', data.message);
       }
       
     } catch (error) {
+      setLoginError('An error occurred. Please try again.');
       console.error(error);
     }
 
@@ -93,6 +97,14 @@ const Login = ({ toggleForm }) => {
               required
             />
           </div>
+
+          {/* Display error message */}
+          {loginError && (
+            <div className="text-red-500 text-sm mb-4">
+              {loginError}
+            </div>
+          )}
+
           <div className='flex justify-center'>
             <button
               className='w-full py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none'
