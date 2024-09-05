@@ -8,24 +8,29 @@ import { setFriends } from "../state";
 const FriendListWidget = ({ userId }) => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  const loggedInUserId = useSelector((state) => state.user?._id);
+  const loggedInUserFriends = useSelector((state) => state.user?.friends);
+  const viewedUserFriends = useSelector((state) => state?.friends);
 
-  const getFriends = async () => {
-    const response = await fetch(`http://localhost:8080/users/${userId}/friends`, {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-         },
-      }
-    );
-    const data = await response.json();
-    dispatch(setFriends({ friends: data }));
-  };
+  const friends = userId === loggedInUserId ? loggedInUserFriends : viewedUserFriends;
 
   useEffect(() => {
+    const getFriends = async () => {
+      const response = await fetch(`http://localhost:8080/users/${userId}/friends`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+           },
+        }
+      );
+      const data = await response.json();
+      dispatch(setFriends({ friends: data, forUserId: userId }));
+    };
+
     getFriends();
-  }, [dispatch, token, userId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  }, [dispatch, token, userId]);
 
   return (
     <WidgetWrapper>

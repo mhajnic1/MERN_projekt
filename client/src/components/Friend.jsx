@@ -13,10 +13,10 @@ import { useEffect } from 'react';
 const Friend = ({ friendId, name, postId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const id = useSelector((state) => state.user?._id);
   const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user?.friends);
-  const isFriend = friends?.find((friend) => friend._id === friendId);
+  const userId = useSelector((state) => state.user?._id);
+  const userFriends = useSelector((state) => state.user?.friends);
+  const isFriend = userFriends?.find((friend) => friend._id === friendId);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -25,7 +25,7 @@ const Friend = ({ friendId, name, postId }) => {
 
   const addRemoveFriend = async () => {
     const response = await fetch(
-      `http://localhost:8080/users/${id}/${friendId}`,
+      `http://localhost:8080/users/${userId}/${friendId}`,
       {
         method: "PATCH",
         headers: {
@@ -35,7 +35,7 @@ const Friend = ({ friendId, name, postId }) => {
       }
     );
     const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+    dispatch(setFriends({ friends: data, forUserId: userId }));
   };
 
   const deletePost = async () => {
@@ -45,7 +45,7 @@ const Friend = ({ friendId, name, postId }) => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId: id }),
+      body: JSON.stringify({ userId: userId }),
     });
     if (response.ok) {
       window.location.reload();
@@ -84,7 +84,7 @@ const Friend = ({ friendId, name, postId }) => {
         </Box>
       </FlexBetween>
       {token && (
-        friendId !== id ? (
+        friendId !== userId ? (
           <IconButton
             onClick={() => addRemoveFriend()}
             sx={{ backgroundColor: primaryLight, p: "0.6rem" }}

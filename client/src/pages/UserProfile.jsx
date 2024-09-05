@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+/* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from 'react';
 import { Loader } from '../components';
 import PostList from '../components/PostList';
@@ -74,10 +75,17 @@ return (
           <PostList posts={posts} searchText={searchText} />
         )}
       </Box>
+      {token ? (
           <Box flexBasis="26%">
             <Box m="2rem 0" />
             <FriendListWidget userId={friendId ? friendId : userId} />
           </Box>
+        ) : (
+          <Box flexBasis="26%">
+            <Box m="2rem 0" />
+            Can't view user's posts unless logged in.
+          </Box>
+        )}
     </Box>
   </>
   );

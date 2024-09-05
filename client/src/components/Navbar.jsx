@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Notifications } from '@mui/icons-material';
 import { Menu, MenuItem, IconButton, Badge } from '@mui/material';
@@ -33,9 +34,9 @@ const Navbar = ({ searchText, handleSearchChange }) => {
           });
 
           // Log response status and text
-          console.log('Response Status:', response.status);
+          //console.log('Response Status:', response.status);
           const responseText = await response.text();
-          console.log('Response Text:', responseText);
+          //console.log('Response Text:', responseText);
 
           // Try parsing JSON
           try {
