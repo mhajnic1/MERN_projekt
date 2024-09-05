@@ -15,7 +15,6 @@ cloudinary.config({
 });
 
 
-// get all posts
 router.route('/').get(async(req, res) => {
 
     try {

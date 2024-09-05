@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
 import { Loader } from '../components';
@@ -28,7 +29,7 @@ const Home = ({ posts, searchText }) => {
         >
           <Box>
             <h1 className="font-extrabold text-[#222328] text-[32px]">
-              AI Studio Showcase
+              AI Art Showcase
             </h1>
             <p className="mt-2 text-[#666e75] text-[14px] max-w-[500px]">
               Browse through a collection of imaginative and visually stunning images

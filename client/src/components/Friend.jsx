@@ -53,7 +53,7 @@ const Friend = ({ friendId, name, postId }) => {
     <FlexBetween
     sx={{
       alignItems: 'center',
-      mb: '0.5rem', // bottom margin za ime i ikonu
+      mb: '0.5rem',
     }}>
       <FlexBetween gap="1rem">
         <Box

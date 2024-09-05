@@ -1,4 +1,4 @@
-import React from 'react';
+/* eslint-disable react/prop-types */
 import FormField from './FormField';
 
 const SearchBar = ({ searchText, handleSearchChange }) => {

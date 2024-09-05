@@ -1,4 +1,4 @@
-import Notification from '../models/Notification.js'; // Adjust path if necessary
+import Notification from '../models/Notification.js';
 import { Server } from 'socket.io';
 
 let io;

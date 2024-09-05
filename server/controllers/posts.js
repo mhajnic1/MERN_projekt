@@ -13,9 +13,6 @@ cloudinary.config({
 });
 
 
-
-
-
 /* CREATE */
 export const createPost = async (req, res) => {
   try {
@@ -34,17 +31,14 @@ export const createPost = async (req, res) => {
     });
     await newPost.save();
 
-    // Find the user's friends
     const friends = user.friends;
 
-    // Create notifications for each friend
     const notifications = friends.map(friendId => ({
       userId: friendId,
       message: `${user.username} has posted something new.`,
       postId: newPost._id,
     }));
 
-    // Insert notifications into the database and emit them in real time
     for (const notificationData of notifications) {
       await createNotification(notificationData);
     }
@@ -64,7 +58,6 @@ export const createPost = async (req, res) => {
 export const getFeedPosts = async (req, res) => {
   try {
     const posts = await Post.find();
-    //res.status(200).json(posts);
     res.status(200).json({ success: true, data: posts});
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -87,11 +80,8 @@ export const likePost = async (req, res) => {
     const { id } = req.params;
     const { userId } = req.body;
     const post = await Post.findById(id);
-
-    // Convert the Map to a plain object for JSON serialization
+    
     const likes = Object.fromEntries(post.likes.entries());
-
-    //const isLiked = likes[userId];
     const isLiked = post.likes.get(userId);
 
     if (isLiked) {

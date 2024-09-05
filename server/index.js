@@ -33,14 +33,9 @@ const io = new Server(server, {
 
 initializeIo(io);
 
-
-
 app.use(cors());
 app.use(express.json());
 
-//app.use('/api/v1/post', postRoutesOld);
-//app.use('/api/v1/dalle', dalleRoutes);
-//app.use('/api/users', userRoutesOld);
 
 /* NEW ROUTES */
 app.use("/auth", authRoutes);

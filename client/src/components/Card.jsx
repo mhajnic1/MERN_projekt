@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { downloadImage } from '../utils';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import FlexBetween from './FlexBetween';
 import Friend from "./Friend";
 import { Box, Divider, IconButton, Typography, useTheme, TextField, Button } from "@mui/material";
@@ -90,8 +90,8 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
     const date = new Date(timestamp);
   
     const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are zero-indexed
-    const year = date.getFullYear().toString().slice(-2); // Get the last two digits of the year
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString().slice(-2);
   
     const hours = date.getHours().toString().padStart(2, '0');
     const minutes = date.getMinutes().toString().padStart(2, '0');
@@ -198,10 +198,10 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
         <Box 
           mt="0.5rem" 
           sx={{ 
-            maxHeight: '300px', // Set a fixed maximum height
-            overflowY: 'auto', // Enable vertical scrolling
-            border: '1px solid #ddd', // Optional border for better visibility
-            borderRadius: '8px', // Optional rounded corners
+            maxHeight: '300px',
+            overflowY: 'auto',
+            border: '1px solid #ddd',
+            borderRadius: '8px',
           }}
         >
           {comments.map((comment, index) => (

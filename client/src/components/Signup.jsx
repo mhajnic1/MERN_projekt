@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { setLogin } from "../state";
@@ -6,7 +7,7 @@ const Signup = ({ toggleForm }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [signupError, setSignupError] = useState(''); // To store signup errors
+  const [signupError, setSignupError] = useState('');
   const modalRef = useRef(null);
   const dispatch = useDispatch();
 
@@ -18,7 +19,7 @@ const Signup = ({ toggleForm }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSignupError(''); // Reset the error message
+    setSignupError('');
 
     try {
       const response = await fetch('http://localhost:8080/auth/register', {
@@ -32,16 +33,14 @@ const Signup = ({ toggleForm }) => {
       const data = await response.json();
 
       if (response.ok) {
-        // Dispatch login action and close form only if signup is successful
         dispatch(
           setLogin({
             user: data.user,
             token: data.token,
           })
         );
-        toggleForm(); // Close the modal if signup is successful
+        toggleForm();
       } else {
-        // Set error message and keep the form open if signup fails
         setSignupError(data.message);
       }
       

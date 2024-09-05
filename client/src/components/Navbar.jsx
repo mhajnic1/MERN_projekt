@@ -15,8 +15,8 @@ const Navbar = ({ searchText, handleSearchChange }) => {
   const navigate = useNavigate();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null); // State for managing dropdown
-  const [notifications, setNotifications] = useState([]); // State for notifications
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [notifications, setNotifications] = useState([]);
   const isAuth = Boolean(useSelector((state) => state.token));
   const user = useSelector((state) => state?.user);
   const dispatch = useDispatch();
@@ -33,12 +33,8 @@ const Navbar = ({ searchText, handleSearchChange }) => {
             },
           });
 
-          // Log response status and text
-          //console.log('Response Status:', response.status);
           const responseText = await response.text();
-          //console.log('Response Text:', responseText);
 
-          // Try parsing JSON
           try {
             const data = JSON.parse(responseText);
             if (data.success) {
@@ -68,7 +64,6 @@ const Navbar = ({ searchText, handleSearchChange }) => {
         },
       });
 
-      // Update UI after marking as read
       setNotifications(prev => prev.filter(notification => notification._id !== notificationId));
     } catch (err) {
       console.error('Failed to mark notification as read:', err);

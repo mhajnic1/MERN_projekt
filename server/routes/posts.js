@@ -14,8 +14,6 @@ router.post("/post", verifyToken, createPost);
 router.get("/", /* verifyToken, */ getFeedPosts);
 router.get("/:userId", verifyToken, getUserPosts);
 
-
-
 /* UPDATE */
 router.patch("/:id/like", verifyToken, likePost);
 router.patch('/:id/comment', verifyToken, addComment);
