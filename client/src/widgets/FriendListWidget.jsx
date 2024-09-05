@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Box, Typography, Divider } from "@mui/material";
 import Friend from "../components/Friend";
 import WidgetWrapper from "../components/WidgetWrapper";

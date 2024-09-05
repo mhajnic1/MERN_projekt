@@ -6,9 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setFriend, setFriends } from "../state";
 import FlexBetween from "./FlexBetween";
-import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-
 
 const Friend = ({ friendId, name, postId }) => {
   const dispatch = useDispatch();
