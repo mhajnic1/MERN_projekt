@@ -206,29 +206,35 @@ const Card = ({ _id, userId, username, prompt, photo, initialLikes, initialComme
         >
           {comments.map((comment, index) => (
             <Box key={index} mb="1rem">
-              <Divider />
-              <Box sx={{ p: "0.5rem 1rem" }}>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Typography sx={{ fontWeight: 'bold' }}>
+            <Divider />
+            <Box sx={{ p: "0.5rem 1rem" }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Typography sx={{ fontWeight: 'bold', mr: '0.5rem' }}>
                     {comment.username}
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     {formatTimestamp(comment.createdAt)}
                   </Typography>
-                  {comment.userId === loggedInUser?._id ?
+                </Box>
+                
+                {/* Show delete icon if the user is the owner of the comment */}
+                {comment.userId === loggedInUser?._id && (
                   <IconButton
                     sx={{ color: 'text.secondary', padding: 0 }}
                     onClick={() => handleDeleteComment(comment._id)}
                   >
                     <DeleteIcon />
                   </IconButton>
-                  : null}
-                </Box>
-                <Typography sx={{ mt: '0.5rem' }}>
-                  {comment.text}
-                </Typography>
+                )}
               </Box>
+              
+              <Typography sx={{ mt: '0.5rem' }}>
+                {comment.text}
+              </Typography>
             </Box>
+          </Box>
+          
           ))}
           <Divider />
         </Box>
